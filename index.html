@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIGURAS DE COROPLAST - Cotizador Pro</title>
+    <style>
+        :root {
+            --primary: #4bb5ff;
+            --secondary: #1e1e1e;
+            --accent: #ff9800;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f1f5f9;
+            --border: #334155;
+        }
+
+        body { 
+            font-family: 'Inter', 'Segoe UI', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 20px;
+        }
+
+        .header-brand {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-brand h1 {
+            margin: 0;
+            font-size: 32px;
+            letter-spacing: 2px;
+            color: var(--primary);
+            text-shadow: 0 4px 10px rgba(75, 181, 255, 0.3);
+        }
+
+        .header-brand p {
+            margin: 5px 0 0;
+            color: #94a3b8;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .card { 
+            width: 100%; 
+            max-width: 450px; 
+            background: var(--card-bg); 
+            padding: 35px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            border: 1px solid var(--border); 
+            transition: transform 0.3s ease;
+        }
+
+        .input-group { margin-bottom: 25px; position: relative; }
+        
+        label { 
+            display: block; 
+            font-size: 12px; 
+            color: #94a3b8; 
+            margin-bottom: 10px; 
+            text-transform: uppercase; 
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 16px; 
+            background: #0f172a; 
+            border: 2px solid var(--border); 
+            border-radius: 14px; 
+            color: #fff; 
+            font-size: 20px; 
+            box-sizing: border-box; 
+            outline: none; 
+            transition: all 0.3s ease;
+        }
+
+        input:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 15px rgba(75, 181, 255, 0.2);
+            background: #1e293b;
+        }
+
+        button { 
+            width: 100%; 
+            padding: 18px; 
+            background: linear-gradient(135deg, #4bb5ff 0%, #3b82f6 100%); 
+            color: #fff; 
+            border: none; 
+            border-radius: 14px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+            text-transform: uppercase;
+        }
+
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        button:active { transform: translateY(0); }
+
+        /* Tabla de Resultados */
+        .tabla-sumas { 
+            width: 100%; 
+            max-width: 450px; 
+            margin-top: 30px; 
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            border: 1px solid var(--border); 
+            overflow: hidden; 
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        
+        th { 
+            background: rgba(15, 23, 42, 0.5); 
+            padding: 15px; 
+            text-align: left; 
+            color: var(--primary); 
+            font-size: 11px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td { 
+            padding: 15px; 
+            border-bottom: 1px solid var(--border); 
+            font-size: 15px;
+        }
+
+        .total-area { 
+            padding: 25px; 
+            background: rgba(15, 23, 42, 0.8); 
+            text-align: right; 
+            border-top: 2px solid var(--primary);
+        }
+
+        .total-label { color: #94a3b8; font-size: 13px; text-transform: uppercase; }
+        
+        .total-final { 
+            font-size: 36px; 
+            font-weight: 800; 
+            color: #fff; 
+            display: block;
+            margin-top: 5px;
+        }
+
+        .btn-borrar { 
+            color: #ef4444; 
+            cursor: pointer; 
+            background: #334155; 
+            border: none; 
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-borrar:hover { background: #ef4444; color: #fff; }
+
+        .min-indicator {
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: bold;
+            display: block;
+        }
+
+        @media print {
+            .card, .btn-borrar { display: none !important; }
+            body { background: white; color: black; padding: 0; }
+            .tabla-sumas { display: block !important; border: 1px solid #000; box-shadow: none; max-width: 100%; }
+            th { color: black; border-bottom: 2px solid black; }
+            .total-final { color: black; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-brand">
+    <h1>FIGURAS DE COROPLAST</h1>
+    <p>Sistema de Cotización Profesional</p>
+</div>
+
+<div class="card">
+    <div class="input-group">
+        <label>Ancho de Figura (cm)</label>
+        <input type="number" id="ancho" placeholder="0" autofocus>
+    </div>
+    <div class="input-group">
+        <label>Largo de Figura (cm)</label>
+        <input type="number" id="largo" placeholder="0">
+    </div>
+    <button onclick="calcular()">Agregar al Pedido</button>
+</div>
+
+<div class="tabla-sumas" id="listaContenedor">
+    <table>
+        <thead>
+            <tr>
+                <th>DETALLE</th>
+                <th style="text-align: right;">PRECIO</th>
+                <th style="text-align: center;">X</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
+    </table>
+    <div class="total-area">
+        <span class="total-label">Suma Total Neto:</span>
+        <span class="total-final" id="totalSuma">$0.00</span>
+    </div>
+</div>
+
+<script>
+    let piezas = [];
+
+    function calcular() {
+        const a = parseFloat(document.getElementById('ancho').value);
+        const l = parseFloat(document.getElementById('largo').value);
+        
+        if (!a || !l) return;
+
+        // --- TU LÓGICA BASE ---
+        const PRECIO_M2 = 365;
+        const UMBRAL_LARGO = 100;
+        const RECARGO_CM_EXTRA = 2.89;
+        const VENTA_MINIMA = 60;
+
+        let m2 = (a * l) / 10000;
+        let costoBase = m2 * PRECIO_M2;
+        let ladoMayor = Math.max(a, l);
+        let recargo = (ladoMayor > UMBRAL_LARGO) ? (ladoMayor - UMBRAL_LARGO) * RECARGO_CM_EXTRA : 0;
+
+        let total = costoBase + recargo;
+        let esMinimo = false;
+        
+        if (total < VENTA_MINIMA) {
+            total = VENTA_MINIMA;
+            esMinimo = true;
+        }
+
+        // AGREGAR AL ARRAY
+        piezas.push({
+            medida: `${a}x${l}`,
+            precio: total,
+            min: esMinimo
+        });
+
+        actualizarTabla();
+        
+        // Limpiar e ir al primer input
+        document.getElementById('ancho').value = '';
+        document.getElementById('largo').value = '';
+        document.getElementById('ancho').focus();
+    }
+
+    function eliminar(index) {
+        piezas.splice(index, 1);
+        actualizarTabla();
+    }
+
+    function actualizarTabla() {
+        const contenedor = document.getElementById('listaContenedor');
+        const cuerpo = document.getElementById('cuerpoTabla');
+        const totalTxt = document.getElementById('totalSuma');
+        
+        cuerpo.innerHTML = '';
+        let sumaTotal = 0;
+
+        if (piezas.length > 0) {
+            contenedor.style.display = 'block';
+        } else {
+            contenedor.style.display = 'none';
+        }
+
+        piezas.forEach((p, index) => {
+            sumaTotal += p.precio;
+            cuerpo.innerHTML += `
+                <tr>
+                    <td>
+                        <b>${p.medida} cm</b>
+                        ${p.min ? '<span class="min-indicator">Venta Mínima</span>' : ''}
+                    </td>
+                    <td style="text-align: right; font-weight: 600;">$${p.precio.toFixed(2)}</td>
+                    <td style="text-align: center;">
+                        <button class="btn-borrar" onclick="eliminar(${index})">×</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        totalTxt.innerText = `$${sumaTotal.toFixed(2)}`;
+    }
+</script>
+
+</body>
+</html>
